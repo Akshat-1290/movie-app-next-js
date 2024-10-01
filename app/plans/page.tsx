@@ -63,6 +63,7 @@ export default function PricingPlans() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           priceId,
+          userId: user.uid,
           mode: "subscription",
           planName: `${planName}`,
           recurringInterval,

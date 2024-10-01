@@ -33,7 +33,12 @@ export async function POST(req: Request) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-    await fulfillOrder(session);
+    try {
+      await fulfillOrder(session);
+    } catch (error) {
+      console.error('Error in fulfillOrder:', error);
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    }
   }
 
   return NextResponse.json({ received: true });
@@ -44,18 +49,27 @@ async function fulfillOrder(session: Stripe.Checkout.Session) {
   const planName = session.metadata?.planName;
 
   if (!userId || !planName) {
-    console.error('Missing userId or planName in session');
+    console.error('Missing userId or planName in session', { userId, planName, session });
     return;
   }
 
   try {
-    await db.collection('users').doc(userId).update({
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      console.error(`User document not found for userId: ${userId}`);
+      return;
+    }
+
+    await userRef.update({
       plan: planName,
       stripeCustomerId: session.customer as string,
     });
     console.log(`Updated user ${userId} to plan ${planName}`);
   } catch (error) {
     console.error('Error updating user in Firestore:', error);
+    throw error; // Re-throw the error to be caught in the main handler
   }
 }
 
