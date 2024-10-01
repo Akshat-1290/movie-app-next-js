@@ -18,7 +18,8 @@ interface Movie {
 }
 
 const Favourites = () => {
-  const { userData, refreshUserData, loading } = useAuth()
+  const { userData, refreshUserData, loading: authLoading } = useAuth()
+  const [isLoading, setIsLoading] = useState(true)
   const [allMovies, setAllMovies] = useState<Movie[]>([])
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([])
 
@@ -43,15 +44,18 @@ const Favourites = () => {
         (userData.favorites as string[]).includes(movie.id)
       )
       setFavoriteMovies(favorites)
+      setIsLoading(false)
     }
   }, [userData, allMovies])
+
+  const showSkeleton = authLoading || isLoading
 
   return (
     <main className="flex gap-7">
       <Sidebar />
       <div className="container mx-auto px-4 py-8 h-[100vh] overflow-y-auto overflow-x-hidden">
         <SearchBar />
-        {loading ? (
+        {showSkeleton ? (
           <>
             <Skeleton className="h-10 w-48 mb-2" />
             <Skeleton className="h-6 w-32 mb-4" />
@@ -65,7 +69,7 @@ const Favourites = () => {
           </>
         )}
         <div className="flex gap-4 flex-wrap">
-          {loading
+          {showSkeleton
             ? Array.from({ length: 7 }).map((_, index) => (
                 <div key={index} className="w-[10rem]">
                   <Skeleton className="w-[150px] h-[225px] rounded-md mb-2" />
@@ -97,7 +101,7 @@ const Favourites = () => {
                 </Link>
               ))}
         </div>
-        {!loading && favoriteMovies.length === 0 && (
+        {!showSkeleton && favoriteMovies.length === 0 && (
           <div className="flex mt-2 flex-col items-center justify-center bg-green-100 w-fit m-auto p-4 rounded-md">
             <h2 className="text-lg font-bold mb-2">
               Save your favorite movies!
