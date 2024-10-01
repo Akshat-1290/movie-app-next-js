@@ -21,12 +21,8 @@ export default function Home() {
           <a href="#" className="nav__link">Privacy policy</a>
         </div>
         <button className="nav__button" onClick={() => {
-          if (user) {
-            window.location.href = '/dashboard';
-          } else {
             setIsAuthModalOpen(true);
-          }
-        }}>{user ? 'Continue to Dashboard' : 'Sign In'}</button>
+        }}>Sign In</button>
       </nav>
 
       {/* Hero */}

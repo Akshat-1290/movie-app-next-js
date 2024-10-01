@@ -30,7 +30,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         } else {
           const newUserData = {
             email: user.email || `guest${Math.floor(Math.random() * 1000000)}@gmail.com`,
-            plan: 'basic',
+            plan: 'premium',
             favorites: []
           };
           await setDoc(userDocRef, newUserData);
