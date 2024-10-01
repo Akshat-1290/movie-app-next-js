@@ -41,7 +41,7 @@ export default function AuthModal() {
       const provider = new GoogleAuthProvider()
       await signInWithPopup(auth, provider)
       setIsAuthModalOpen(false)
-      router.push('/dashboard');
+      window.location.href = '/dashboard';
     } catch (error: any) {
       setError(error.message || 'Failed to sign in with Google')
     } finally {
@@ -56,7 +56,7 @@ export default function AuthModal() {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       setIsAuthModalOpen(false)
-      router.push('/dashboard');
+      window.loca
     } catch (error: any) {
       setError(error.message || 'Failed to sign in')
     } finally {
@@ -71,7 +71,7 @@ export default function AuthModal() {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
       setIsAuthModalOpen(false)
-      router.push('/dashboard');
+      window.loca
     } catch (error: any) {
       setError(error.message || 'Failed to sign up')
     } finally {
@@ -100,7 +100,7 @@ export default function AuthModal() {
     try {
       await signInAnonymously(auth)
       setIsAuthModalOpen(false)
-      router.push('/dashboard');
+      window.loca
     } catch (error: any) {
       setError(error.message || 'Failed to sign in as guest')
     } finally {
