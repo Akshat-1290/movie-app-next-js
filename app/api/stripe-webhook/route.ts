@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { buffer } from 'micro';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
@@ -20,13 +19,13 @@ if (!getApps().length) {
 const db = getFirestore();
 
 export async function POST(req: Request) {
-  const buf = await buffer(req);
+  const body = await req.text();
   const sig = req.headers.get('stripe-signature')!;
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(buf, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
   } catch (err: any) {
     console.error(`Webhook Error: ${err.message}`);
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
@@ -60,8 +59,3 @@ async function fulfillOrder(session: Stripe.Checkout.Session) {
   }
 }
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
