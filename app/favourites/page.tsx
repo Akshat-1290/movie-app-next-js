@@ -45,9 +45,10 @@ const Favourites = () => {
       )
       setFavoriteMovies(favorites)
       setIsLoading(false)
+    }else{
+      setIsLoading(false)
     }
   }, [userData, allMovies])
-
   const showSkeleton = authLoading || isLoading
 
   return (

@@ -72,10 +72,11 @@ function SearchBar() {
 
   return (
     <div className="relative mb-8 flex items-center justify-between" ref={searchRef}>
-      <div className="md:hidden">
-        <Menu className="text-gray-400 cursor-pointer" onClick={() =>{
-          setIsMobileSidebarOpen(true)
-        }} />
+      <div className="md:hidden mr-4">
+        <Menu
+          className="text-gray-400 cursor-pointer"
+          onClick={() => setIsMobileSidebarOpen(true)}
+        />
       </div>
       <div className="relative flex-grow max-w-[30rem]">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -89,7 +90,7 @@ function SearchBar() {
         />
       </div>
       {showResults && (search || loading) && (
-        <div className="absolute z-10 mt-2 w-full max-w-[30rem] bg-white rounded-md shadow-lg h-fit max-h-[22rem] overflow-y-auto">
+        <div className="absolute top-12 z-10 mt-2 w-full max-w-[30rem] bg-white rounded-md shadow-lg h-fit max-h-[22rem] overflow-y-auto">
           {loading ? (
             <div className="p-4">
               {[...Array(3)].map((_, index) => (
