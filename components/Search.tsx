@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Input } from "@/components/ui/input";
-import { Search, Clock } from "lucide-react";
+import { Search, Clock, Menu } from "lucide-react";
 import Image from "next/image";
 import debounce from "lodash/debounce";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/AuthContext";
 
 interface Movie {
   id: string;
@@ -21,6 +22,7 @@ function SearchBar() {
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { setIsMobileSidebarOpen } = useAuth();
 
   const fetchMovies = async (query: string) => {
     setLoading(true);
@@ -36,7 +38,7 @@ function SearchBar() {
   };
 
   const debouncedFetch = useCallback(
-    debounce((query: string) => fetchMovies(query), 300),
+    debounce((query: string) => fetchMovies(query), 500),
     []
   );
 
@@ -69,16 +71,23 @@ function SearchBar() {
   };
 
   return (
-    <div className="relative mb-8" ref={searchRef}>
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-      <Input
-        className="w-full bg-gray-100 rounded-full max-w-[30rem] pl-10 pr-4 py-5"
-        placeholder="Search for movies..."
-        type="search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onFocus={() => setShowResults(true)}
-      />
+    <div className="relative mb-8 flex items-center justify-between" ref={searchRef}>
+      <div className="md:hidden">
+        <Menu className="text-gray-400 cursor-pointer" onClick={() =>{
+          setIsMobileSidebarOpen(true)
+        }} />
+      </div>
+      <div className="relative flex-grow max-w-[30rem]">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <Input
+          className="w-full bg-gray-100 rounded-full pl-10 pr-4 py-5"
+          placeholder="Search for movies..."
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onFocus={() => setShowResults(true)}
+        />
+      </div>
       {showResults && (search || loading) && (
         <div className="absolute z-10 mt-2 w-full max-w-[30rem] bg-white rounded-md shadow-lg h-fit max-h-[22rem] overflow-y-auto">
           {loading ? (
@@ -106,10 +115,10 @@ function SearchBar() {
                 <div className="ml-4">
                   <h3 className="font-semibold">{movie.title}</h3>
                   <p className="text-sm text-gray-600">{movie.director}</p>
-                  <div className="flex items-center text-sm text-gray-500 mt-1">
+                  {/* <div className="flex items-center text-sm text-gray-500 mt-1">
                     <Clock size={14} className="mr-1" />
                     {movie.duration}
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))

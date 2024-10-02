@@ -22,10 +22,10 @@ interface Movie {
 function MovieCarouselSkeleton() {
   return (
     <div className="embla__container flex">
-      {[...Array(4)].map((_, index) => (
+      {[...Array(6)].map((_, index) => (
         <div
           key={index}
-          className="embla__slide flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%] pl-4"
+          className="embla__slide flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_20%] pl-4"
         >
           <Card className="h-full">
             <CardContent className="p-4 relative">
@@ -46,7 +46,7 @@ function MovieCarouselSkeleton() {
 function MoviesCarousel({ movies }: { movies: Movie[] | undefined; isLoading: boolean }) {
   const {userData , loading} = useAuth()
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
+    loop: true,
     align: "start",
   })
 
@@ -69,7 +69,7 @@ function MoviesCarousel({ movies }: { movies: Movie[] | undefined; isLoading: bo
               <Link
                 href={`/movie/${movie.id}`}
                 key={movie.id}
-                className="embla__slide flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_25%] pl-4"
+                className="embla__slide flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.33%] lg:flex-[0_0_20%] pl-4"
               >
                 <Card className="h-full cursor-pointer">
                   <CardContent className="p-4 relative">
@@ -83,11 +83,11 @@ function MoviesCarousel({ movies }: { movies: Movie[] | undefined; isLoading: bo
                       src={movie.imageLink}
                       width="240"
                     />
-                    <h3 className="font-semibold">{movie.title}</h3>
+                    <h3 className="font-semibold text-base">{movie.title}</h3>
                     <p className="text-sm text-muted-foreground">
                       {movie.director}
                     </p>
-                    <div className="flex justify-between text-sm text-muted-foreground mt-1">
+                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
                       <span>★ {movie.rating}</span>
                     </div>
                   </CardContent>

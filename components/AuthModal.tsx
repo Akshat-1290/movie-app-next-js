@@ -109,7 +109,7 @@ export default function AuthModal() {
   }
 
   return (
-    <div className="fixed z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed z-[1000] inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md relative">
         <button
           onClick={() => setIsAuthModalOpen(false)}

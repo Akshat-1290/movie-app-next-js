@@ -20,6 +20,8 @@ interface AuthContextType {
   userData: UserData | null;
   setUserData: (userData: UserData | null) => void;
   refreshUserData: () => void;
+  isMobileSidebarOpen: boolean;
+  setIsMobileSidebarOpen: (isOpen: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,6 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const refreshUserData = async () => {
     if (user) {
       const userDocRef = doc(db, 'users', user.uid);
@@ -41,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <AuthContext.Provider value={{ user, loading, setUser, setLoading, isAuthModalOpen, setIsAuthModalOpen, userData, setUserData , refreshUserData }}>
+    <AuthContext.Provider value={{ user, loading, setUser, setLoading, isAuthModalOpen, setIsAuthModalOpen, userData, setUserData , refreshUserData , isMobileSidebarOpen, setIsMobileSidebarOpen }}>
       {children}
     </AuthContext.Provider>
   );
